@@ -59,7 +59,8 @@ class PlacePicker extends StatefulWidget {
     this.forceSearchOnZoomChanged = false,
     this.automaticallyImplyAppBarLeading = true,
     this.autocompleteOnTrailingWhitespace = false,
-    this.hidePlaceDetailsWhenDraggingPin = true
+    this.hidePlaceDetailsWhenDraggingPin = true,
+    this.showPopAction = true
   }) : super(key: key);
 
   final String apiKey;
@@ -94,6 +95,8 @@ class PlacePicker extends StatefulWidget {
   final List<String> autocompleteTypes;
   final List<Component> autocompleteComponents;
   final bool strictbounds;
+  final bool showPopAction;
+
   final String region;
 
   /// If true the [body] and the scaffold's floating widgets should size
@@ -225,7 +228,7 @@ class _PlacePickerState extends State<PlacePicker> {
   Widget _buildSearchBar() {
     return Row(
       children: <Widget>[
-        widget.automaticallyImplyAppBarLeading
+        widget.automaticallyImplyAppBarLeading && widget.showPopAction
             ? IconButton(
                 onPressed: () => Navigator.maybePop(context),
                 icon: Icon(
