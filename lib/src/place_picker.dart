@@ -288,7 +288,12 @@ class _PlacePickerState extends State<PlacePicker> {
       return;
     }
 
-    provider.selectedPlace = PickResult.fromPlaceDetailResult(response.result);
+    provider.selectedPlace = PickResult.fromPlaceDetailResult(response.result, 
+      LatLng(
+        provider.selectedPlace.geometry.location.lat,
+        provider.selectedPlace.geometry.location.lng
+      )
+    );
 
     // Prevents searching again by camera movement.
     provider.isAutoCompleteSearching = true;

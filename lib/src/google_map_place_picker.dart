@@ -124,10 +124,10 @@ class GoogleMapPlacePicker extends StatelessWidget {
       }
 
       provider.selectedPlace =
-          PickResult.fromPlaceDetailResult(detailResponse.result);
+          PickResult.fromPlaceDetailResult(detailResponse.result, provider.cameraPosition.target);
     } else {
       provider.selectedPlace =
-          PickResult.fromGeocodingResult(response.results[0]);
+          PickResult.fromGeocodingResult(response.results[0], provider.cameraPosition.target);
     }
 
     provider.placeSearchingState = SearchingState.Idle;

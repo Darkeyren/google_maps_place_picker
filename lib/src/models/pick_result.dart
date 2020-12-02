@@ -1,3 +1,5 @@
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/geocoding.dart';
 import 'package:google_maps_webservice/places.dart';
 
@@ -25,10 +27,12 @@ class PickResult {
     this.utcOffset,
     this.website,
     this.reviews,
+    this.realGeometry
   });
 
   final String placeId;
   final Geometry geometry;
+  final LatLng realGeometry;
   final String formattedAddress;
   final List<String> types;
   final List<AddressComponent> addressComponents;
@@ -52,17 +56,18 @@ class PickResult {
   final String website;
   final List<Review> reviews;
 
-  factory PickResult.fromGeocodingResult(GeocodingResult result) {
+  factory PickResult.fromGeocodingResult(GeocodingResult result, LatLng realGeometry) {
     return PickResult(
       placeId: result.placeId,
       geometry: result.geometry,
       formattedAddress: result.formattedAddress,
       types: result.types,
       addressComponents: result.addressComponents,
+      realGeometry: realGeometry
     );
   }
 
-  factory PickResult.fromPlaceDetailResult(PlaceDetails result) {
+  factory PickResult.fromPlaceDetailResult(PlaceDetails result, LatLng realGeometry) {
     return PickResult(
       placeId: result.placeId,
       geometry: result.geometry,
@@ -86,6 +91,7 @@ class PickResult {
       utcOffset: result.utcOffset,
       website: result.website,
       reviews: result.reviews,
+      realGeometry: realGeometry
     );
   }
 }
