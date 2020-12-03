@@ -165,6 +165,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
             tiltGesturesEnabled: !staticMap,
             scrollGesturesEnabled: !staticMap,
             zoomGesturesEnabled: !staticMap,
+            myLocationEnabled: !staticMap,
 
             onMapCreated: (GoogleMapController controller) {
               provider.mapController = controller;
