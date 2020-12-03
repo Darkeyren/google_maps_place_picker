@@ -45,6 +45,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
     this.selectInitialPosition,
     this.language,
     this.forceSearchOnZoomChanged,
+    this.staticMap,
     this.hidePlaceDetailsWhenDraggingPin,
   }) : super(key: key);
 
@@ -74,6 +75,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
 
   final bool forceSearchOnZoomChanged;
   final bool hidePlaceDetailsWhenDraggingPin;
+  final bool staticMap;
 
   _searchByCameraLocation(PlaceProvider provider) async {
     // We don't want to search location again if camera location is changed by zooming in/out.
@@ -159,7 +161,11 @@ class GoogleMapPlacePicker extends StatelessWidget {
             mapToolbarEnabled: false,
             initialCameraPosition: initialCameraPosition,
             mapType: data,
-            myLocationEnabled: true,
+            
+            tiltGesturesEnabled: !staticMap,
+            scrollGesturesEnabled: !staticMap,
+            zoomGesturesEnabled: !staticMap,
+
             onMapCreated: (GoogleMapController controller) {
               provider.mapController = controller;
               provider.setCameraPosition(null);
@@ -295,7 +301,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
           provider.placeSearchingState, provider.isSearchBarFocused, provider.pinState),
       builder: (context, data, __) {
         if ((data.item1 == null && data.item2 == SearchingState.Idle) ||
-            data.item3 == true || data.item4 == PinState.Dragging && this.hidePlaceDetailsWhenDraggingPin) {
+            data.item3 == true || data.item4 == PinState.Dragging && this.hidePlaceDetailsWhenDraggingPin || this.staticMap) {
           return Container();
         } else {
           if (selectedPlaceWidgetBuilder == null) {

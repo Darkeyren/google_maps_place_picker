@@ -28,6 +28,7 @@ class PlacePicker extends StatefulWidget {
     this.onMapCreated,
     this.hintText,
     this.searchingText,
+    this.staticMap = false,
     // this.searchBarHeight,
     // this.contentPadding,
     this.onAutoCompleteFailed,
@@ -96,6 +97,7 @@ class PlacePicker extends StatefulWidget {
   final List<Component> autocompleteComponents;
   final bool strictbounds;
   final bool showPopAction;
+  final bool staticMap;
 
   final String region;
 
@@ -199,7 +201,7 @@ class _PlacePickerState extends State<PlacePicker> {
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () {
-          searchBarController.clearOverlay();
+          if(!widget.staticMap) searchBarController.clearOverlay();
           return Future.value(true);
         },
         child: ChangeNotifierProvider.value(
@@ -228,7 +230,7 @@ class _PlacePickerState extends State<PlacePicker> {
   Widget _buildSearchBar() {
     return Row(
       children: <Widget>[
-        widget.automaticallyImplyAppBarLeading && widget.showPopAction
+        widget.automaticallyImplyAppBarLeading || widget.showPopAction
             ? IconButton(
                 onPressed: () => Navigator.maybePop(context),
                 icon: Icon(
@@ -237,7 +239,7 @@ class _PlacePickerState extends State<PlacePicker> {
                 padding: EdgeInsets.zero)
             : SizedBox(width: 15),
         Expanded(
-          child: AutoCompleteSearch(
+          child: !widget.staticMap ? AutoCompleteSearch(
               appBarKey: appBarKey,
               searchBarController: searchBarController,
               sessionToken: provider.sessionToken,
@@ -262,7 +264,7 @@ class _PlacePickerState extends State<PlacePicker> {
               initialSearchString: widget.initialSearchString,
               searchForInitialValue: widget.searchForInitialValue,
               autocompleteOnTrailingWhitespace:
-                  widget.autocompleteOnTrailingWhitespace),
+                  widget.autocompleteOnTrailingWhitespace) : Container(),
         ),
         SizedBox(width: 5),
       ],
@@ -359,6 +361,7 @@ class _PlacePickerState extends State<PlacePicker> {
   Widget _buildMap(LatLng initialTarget) {
     return GoogleMapPlacePicker(
       initialTarget: initialTarget,
+      staticMap: widget.staticMap,
       appBarKey: appBarKey,
       selectedPlaceWidgetBuilder: widget.selectedPlaceWidgetBuilder,
       pinBuilder: widget.pinBuilder,
@@ -389,7 +392,7 @@ class _PlacePickerState extends State<PlacePicker> {
         }
       },
       onMoveStart: () {
-        searchBarController.reset();
+        if(!widget.staticMap) searchBarController.reset();
       },
       onPlacePicked: widget.onPlacePicked,
     );
