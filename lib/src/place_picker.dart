@@ -61,7 +61,8 @@ class PlacePicker extends StatefulWidget {
     this.automaticallyImplyAppBarLeading = true,
     this.autocompleteOnTrailingWhitespace = false,
     this.hidePlaceDetailsWhenDraggingPin = true,
-    this.showPopAction = true
+    this.showPopAction = true,
+    this.initialZoomScale = 15,
   }) : super(key: key);
 
   final String apiKey;
@@ -169,6 +170,8 @@ class PlacePicker extends StatefulWidget {
   final bool autocompleteOnTrailingWhitespace;
 
   final bool hidePlaceDetailsWhenDraggingPin;
+
+  final double initialZoomScale;
 
   @override
   _PlacePickerState createState() => _PlacePickerState();
@@ -376,6 +379,7 @@ class _PlacePickerState extends State<PlacePicker> {
       language: widget.autocompleteLanguage,
       forceSearchOnZoomChanged: widget.forceSearchOnZoomChanged,
       hidePlaceDetailsWhenDraggingPin: widget.hidePlaceDetailsWhenDraggingPin,
+      initialZoomScale: widget.initialZoomScale,
       onToggleMapType: () {
         provider.switchMapType();
       },
